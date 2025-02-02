@@ -11,6 +11,7 @@ If you have never used an object-oriented programming language before, you will 
 **A Simple Code Snippet of Class and Object**
 
 **Class Code Snippet:**
+Python
 
 ```python
 class ShoppingCart(object):
@@ -38,8 +39,57 @@ class ShoppingCart(object):
         balance = cash_paid - self.total
         return "Exchange amount: {}".format(balance)
 ```
+Java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ShoppingCart {
+    private double total;
+    private Map<String, Integer> items;
+
+    public ShoppingCart() {
+        this.total = 0.0;
+        this.items = new HashMap<>();
+    }
+
+    public void addItem(String itemName, int quantity, double price) {
+        this.total += (quantity * price);
+        items.put(itemName, items.getOrDefault(itemName, 0) + quantity);
+    }
+
+    public void removeItem(String itemName, int quantity, double price) {
+        if (items.containsKey(itemName)) {
+            this.total -= (quantity * price);
+            int remainingQuantity = items.get(itemName) - quantity;
+            if (remainingQuantity <= 0) {
+                items.remove(itemName);
+            } else {
+                items.put(itemName, remainingQuantity);
+            }
+        }
+    }
+
+    public String checkout(double cashPaid) {
+        if (cashPaid < total) {
+            return "You paid " + cashPaid + " but cart amount is " + total;
+        }
+        double balance = cashPaid - total;
+        return "Exchange amount: " + balance;
+    }
+
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Apple", 2, 1.50);
+        cart.addItem("Banana", 1, 0.75);
+        System.out.println(cart.checkout(5));  // Example checkout
+    }
+}
+
+```
 
 **Object and it's Uses Code Snippet:**
+Python
 ```python
 # Driver code
 cart = ShoppingCart()
@@ -55,6 +105,26 @@ print('Total cart amount:', cart.total)
 print('Cart items:', cart.items)
 
 print(cart_res)
+```
+Java
+```java
+public class ShoppingCartDriver {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+
+        cart.addItem("A", 10, 50);
+        cart.addItem("B", 5, 20);
+
+        cart.removeItem("B", 1, 20);
+
+        String cartRes = cart.checkout(600);
+
+        System.out.println("Total cart amount: " + cart.getTotal());
+        System.out.println("Cart items: " + cart.getItems());
+        System.out.println(cartRes);
+    }
+}
+
 ```
 
 **Response:**
@@ -96,6 +166,34 @@ product.sell()
 # using setter function
 product.set_max_price(1000)
 product.sell()
+```
+Java
+```java
+class Product {
+
+    private int maxPrice = 900;
+
+    public void sell() {
+        System.out.println("Selling Price: " + maxPrice);
+    }
+
+    public void setMaxPrice(int price) {
+        maxPrice = price;
+    }
+
+    public static void main(String[] args) {
+        Product product = new Product();
+        product.sell();
+
+        // Attempt to change the price directly (won't work in Java due to private access modifier)
+        // product.maxPrice = 1000; // This would result in a compile-time error
+
+        // Using setter function
+        product.setMaxPrice(1000);
+        product.sell();
+    }
+}
+
 ```
 
 
@@ -139,6 +237,47 @@ child2 = Child2()
 child2.common()
 child2.vary()
 ```
+Java
+```java
+abstract class Parent {
+    // Common method
+    public void common() {
+        System.out.println("In common method of Parent");
+    }
+
+    // Abstract method
+    public abstract void vary();
+}
+
+class Child1 extends Parent {
+    @Override
+    public void vary() {
+        System.out.println("In vary method of Child1");
+    }
+}
+
+class Child2 extends Parent {
+    @Override
+    public void vary() {
+        System.out.println("In vary method of Child2");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Object of Child1 class
+        Child1 child1 = new Child1();
+        child1.common();
+        child1.vary();
+
+        // Object of Child2 class
+        Child2 child2 = new Child2();
+        child2.common();
+        child2.vary();
+    }
+}
+
+```
 
 
 **Response:**
@@ -178,6 +317,55 @@ print("{} is employee: {}".format(emp.get_name(), emp.is_employee()))
 emp = Employee("Employee 1")
 print("{} is employee: {}".format(emp.get_name(), emp.is_employee()))
 ```
+Java
+```java
+class Person {
+
+    private String name;
+
+    // Constructor
+    public Person(String name) {
+        this.name = name;
+    }
+
+    // Getter method
+    public String getName() {
+        return name;
+    }
+
+    // Method to check if the person is an employee
+    public boolean isEmployee() {
+        return false;
+    }
+}
+
+class Employee extends Person {
+
+    // Constructor
+    public Employee(String name) {
+        super(name);
+    }
+
+    // Overriding method to indicate if the person is an employee
+    @Override
+    public boolean isEmployee() {
+        return true;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Creating a Person object
+        Person person = new Person("Person 1");
+        System.out.println(person.getName() + " is employee: " + person.isEmployee());
+
+        // Creating an Employee object
+        Employee employee = new Employee("Employee 1");
+        System.out.println(employee.getName() + " is employee: " + employee.isEmployee());
+    }
+}
+
+```
 
 
 **Response:**
@@ -213,6 +401,46 @@ knight = Knights()
 # passing the object
 move_test(bishop)
 move_test(knight)
+```
+```java
+// Interface for chess pieces
+interface ChessPiece {
+    void move();
+}
+
+// Bishops class implementing ChessPiece interface
+class Bishops implements ChessPiece {
+    @Override
+    public void move() {
+        System.out.println("Bishops can move diagonally");
+    }
+}
+
+// Knights class implementing ChessPiece interface
+class Knights implements ChessPiece {
+    @Override
+    public void move() {
+        System.out.println("Knights can move two squares vertically and one square horizontally, or two squares horizontally and one square vertically");
+    }
+}
+
+// Common method to test move
+public class Main {
+    public static void moveTest(ChessPiece chessPiece) {
+        chessPiece.move();
+    }
+
+    public static void main(String[] args) {
+        // Instantiate objects
+        ChessPiece bishop = new Bishops();
+        ChessPiece knight = new Knights();
+
+        // Passing the object to the moveTest method
+        moveTest(bishop);
+        moveTest(knight);
+    }
+}
+
 ```
 
 
